@@ -131,6 +131,11 @@ namespace MyBackendApp.Services
                         restaurant.Deskripsi = "Err Number: " + sqlEx.Number.ToString();
                         throw new Exception(sqlEx.Message);
                     }
+                    catch (TransactionAbortedException tex)
+                    {
+                        restaurant.Deskripsi += tex.Message;
+                        throw new Exception(tex.Message);
+                    }
                     catch (Exception ex)
                     {
                         throw new Exception(ex.Message);
@@ -139,7 +144,7 @@ namespace MyBackendApp.Services
                 }
             }
 
-
+            //https://learn.microsoft.com/en-us/dotnet/framework/data/transactions/implementing-an-implicit-transaction-using-transaction-scope
 
 
         }

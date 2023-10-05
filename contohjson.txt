@@ -1,0 +1,16 @@
+{
+  "restaurantTypeID": 2,
+  "name": "BPK 123",
+
+  "restaurantMenus": [
+    {
+      "menuName": "BPK 1"
+    },
+    {
+      "menuName": "BPK 2"
+    },
+    {
+      "menuName": "BPK 3"
+    }
+  ]
+}
