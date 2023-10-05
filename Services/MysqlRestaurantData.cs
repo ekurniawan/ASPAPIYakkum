@@ -16,8 +16,6 @@ namespace MyBackendApp.Services
             return _configuration.GetConnectionString("DefaultConnection");
         }
 
-
-
         public IEnumerable<RestaurantDTO> GetAll()
         {
             List<RestaurantDTO> restaurants = new List<RestaurantDTO>();
@@ -48,5 +46,30 @@ namespace MyBackendApp.Services
             }
         }
 
+        public RestaurantDTO GetById(int id)
+        {
+            RestaurantDTO restaurant = new RestaurantDTO();
+            using (MySqlConnection conn = new MySqlConnection(GetConnStr()))
+            {
+                string strSql = @"select * from Restaurants r
+                                inner join RestaurantTypes rt 
+                                on r.RestaurantTypeID = rt.RestaurantTypeID
+                                where RestaurantID = @id";
+                MySqlCommand cmd = new MySqlCommand(strSql, conn);
+                cmd.Parameters.AddWithValue("@id", id);
+                conn.Open();
+                MySqlDataReader dr = cmd.ExecuteReader();
+                if (dr.HasRows)
+                {
+                    dr.Read();
+                    restaurant.RestaurantID = Convert.ToInt32(dr["RestaurantID"]);
+                    restaurant.Name = dr["Name"].ToString();
+                }
+            }
+            return restaurant;
+        }
     }
+
+
+
 }
