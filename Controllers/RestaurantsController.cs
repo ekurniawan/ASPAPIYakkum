@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MyBackendApp.DTO;
+using MyBackendApp.Services;
 
 namespace MyBackendApp.Controllers
 {
@@ -10,31 +12,24 @@ namespace MyBackendApp.Controllers
     [Route("api/[controller]")]
     public class RestaurantsController : ControllerBase
     {
-        private List<string> lstNama;
-        public RestaurantsController()
+        private readonly IRestaurant _restaurantService;
+        public RestaurantsController(IRestaurant restaurantService)
         {
-            lstNama = new List<string>()
-            {
-                "Erick","Rufus","Iroen","Ponco","Rizal"
-            };
+            _restaurantService = restaurantService;
         }
 
         [HttpGet]
-        public List<string> Get()
+        public async Task<ActionResult<RestaurantGetDTO>> Get()
         {
-            return lstNama;
-        }
+            var restaurants = await _restaurantService.GetAll();
 
-        [HttpGet("search/{name}")]
-        public List<string> GetByName(string name)
-        {
-            return lstNama.Where(x => x.Contains(name)).ToList();
-        }
+            var results = restaurants.Select(r => new RestaurantGetDTO
+            {
+                RestaurantID = r.RestaurantID,
+                Name = r.Name
+            });
 
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return $"Nama : {lstNama[id]}";
+            return Ok(results);
         }
     }
 }
