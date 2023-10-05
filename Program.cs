@@ -1,13 +1,17 @@
+using MyBackendApp.Authorization;
 using MyBackendApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddCors();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
@@ -18,9 +22,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(x => x
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
+
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+// custom basic auth middleware
+app.UseMiddleware<BasicAuthMiddleware>();
+
+//app.UseAuthorization();
 
 app.MapControllers();
 

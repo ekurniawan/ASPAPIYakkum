@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc;
+using MyBackendApp.Authorization;
 using MyBackendApp.DTO;
 using MyBackendApp.Services;
 
 namespace MyBackendApp.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class RestaurantsController : ControllerBase
