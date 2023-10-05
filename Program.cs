@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using MyBackendApp.Data;
 using MyBackendApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,13 +8,6 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-//mendaftarkan EF Core
-builder.Services.AddDbContext<AppDbContext>(
-    options => options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection"))
-);
-
-builder.Services.AddScoped<IRestaurant, RestaurantData>();
 
 var app = builder.Build();
 

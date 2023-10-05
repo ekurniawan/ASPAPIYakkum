@@ -12,23 +12,17 @@ namespace MyBackendApp.Controllers
     [Route("api/[controller]")]
     public class RestaurantsController : ControllerBase
     {
-        private readonly IRestaurant _restaurantService;
-        public RestaurantsController(IRestaurant restaurantService)
+        private readonly IConfiguration _configuration;
+        public RestaurantsController(IConfiguration configuration)
         {
-            _restaurantService = restaurantService;
+            _configuration = configuration;
         }
 
         [HttpGet]
-        public async Task<ActionResult<RestaurantGetDTO>> Get()
+        public ActionResult<RestaurantDTO> Get()
         {
-            var restaurants = await _restaurantService.GetAll();
-
-            var results = restaurants.Select(r => new RestaurantGetDTO
-            {
-                RestaurantID = r.RestaurantID,
-                Name = r.Name
-            });
-
+            MysqlRestaurantData mysqlRestaurantData = new MysqlRestaurantData(_configuration);
+            var results = mysqlRestaurantData.GetAll();
             return Ok(results);
         }
     }
