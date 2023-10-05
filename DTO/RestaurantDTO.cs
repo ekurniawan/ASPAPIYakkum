@@ -10,14 +10,16 @@ namespace MyBackendApp.DTO
     {
         public int RestaurantTypeID { get; set; }
 
-        [StringLength(255)]
         public string? RestaurantTypeName { get; set; }
-
 
         public int RestaurantID { get; set; }
 
-        [StringLength(255)]
+
         public string? Name { get; set; }
+
+        public string? Deskripsi { get; set; }
+
+        public List<RestaurantMenu> RestaurantMenus { get; set; }
 
     }
 }
